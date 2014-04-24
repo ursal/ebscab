@@ -458,7 +458,7 @@ class AccountsCashierReportTable(EbsadminTableReport):
     fullname = FormatBlankColumn()
     tariff = FormatBlankColumn()
     address = django_tables.TemplateColumn(
-        u"{{record.city|default:''}} {{record.street|default:''}} {{record.house|default:''}}-{{record.room|default:''}}",
+        u"{{record.city|default:''}}, {{record.street|default:''}} {{record.house|default:''}}, кв. {{record.room|default:''}}",
         orderable=False
     )
     entrance = django_tables.Column(verbose_name=_(u'Подъезд'))
