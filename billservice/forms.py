@@ -541,7 +541,6 @@ class AccountForm(DynamicForm):
     username = forms.CharField(label =_(u"Имя пользователя"), required=True, widget = forms.widgets.TextInput(attrs={'class': 'input-medium'}))
     #password = forms.CharField(label = _(u"Пароль") if  settings.HIDE_PASSWORDS==False else _(u"Изменить пароль"), required=False, widget = forms.widgets.PasswordInput(attrs={'class': 'input-medium'}, render_value=False))
     password = forms.CharField(label = _(u"Пароль") if  settings.HIDE_PASSWORDS==False else _(u"Изменить пароль"), required=False, widget = CustomPasswordWidget(attrs={'class': 'input-medium'})  if  settings.HIDE_PASSWORDS==True else forms.widgets.TextInput(attrs={'class': 'input-medium'}))
-    
         
     city = forms.ModelChoiceField(label=_(u"Город"),queryset=City.objects.all(), required=False, widget = forms.widgets.Select(attrs={'class': 'input-large',}))
     
@@ -574,9 +573,9 @@ class AccountForm(DynamicForm):
         self.fields['comment'].widget.attrs['cols'] =10
         self.fields['created'].widget = forms.widgets.DateTimeInput(attrs={'class':'datepicker'})
         self.fields['birthday'].widget = forms.widgets.DateTimeInput(attrs={'class':'datepicker'})
-        self.fields['phone_m'] = PhoneField(required=False)
-        self.fields['phone_h'] = PhoneField(required=False)
-        self.fields['contactperson_phone'] = PhoneField(required=False)
+        self.fields['phone_m'] = PhoneField(label = _(u"Мобильный тел."), required=False)
+        self.fields['phone_h'] = PhoneField(label = _(u"Стационарный тел."), required=False)
+        self.fields['contactperson_phone'] = PhoneField(label = _(u"Контактный тел."), required=False)
 
             
 
