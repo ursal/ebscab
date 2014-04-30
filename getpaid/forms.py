@@ -16,10 +16,11 @@ from utils import get_backend_choices, import_name
 class PaymentRadioInput(RadioInput):
     def __init__(self, name, value, attrs, choice, index):
         super(PaymentRadioInput, self).__init__(name, value, attrs, choice, index)
-        logo_url = import_name(choice[0]).PaymentProcessor.get_logo_url()
+        logo_url = import_name(choice[0]).PaymentProcessor.BACKEND_LOGO_URL
+        #logo_url = import_name(choice[0]).PaymentProcessor.get_logo_url()
         if logo_url :
-            self.choice_label = mark_safe('<img src="%s%s" alt="%s">' % (
-                getattr(settings, 'STATIC_URL', ''),
+            self.choice_label = mark_safe('<img src="%s%s" height=30px alt="%s">' % (
+                getattr(settings, 'MEDIA_URL', ''),
                 logo_url,
                 force_unicode(choice[1]),
                 )

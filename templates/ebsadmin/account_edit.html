@@ -851,7 +851,6 @@
               <div class="control-row">
                 <label class="control-label" for="input-street">{{form.house.label}}</label>
                 <div class="controls">
-
                   {{ form.house }}
                   {% if form.house.errors %}
                   <span class="help-inline">{% for error in form.house.errors %}{{ error }}<br/> {% endfor %}</span>
@@ -863,9 +862,6 @@
                   {% endif %}
                 </div>
               </div>
-            </div>
-
-            <div class="control-group">
               <div class="control-row">
                 <label class="control-label" for="input-entrance">{{form.house_bulk.label}}</label>
                 <div class="controls">
@@ -876,6 +872,23 @@
                   {% if form.house_bulk.help_text%}
                   <p class="help-block">
                     {{ form.house_bulk.help_text|safe }}
+                  </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-row">
+                <label class="control-label" for="input-entrance">{{form.entrance.label}}</label>
+                <div class="controls">
+                  {{ form.entrance }}
+                  {% if form.entrance.errors %}
+                  <span class="help-inline">{% for error in form.entrance.errors %}{{ error }}<br/> {% endfor %}</span>
+                  {% endif %}
+                  {% if form.entrance.help_text%}
+                  <p class="help-block">
+                    {{ form.entrance.help_text|safe }}
                   </p>
                   {% endif %}
                 </div>
@@ -899,23 +912,6 @@
 
             <div class="control-group">
               <div class="control-row">
-                <label class="control-label" for="input-entrance">{{form.entrance.label}}</label>
-                <div class="controls">
-                  {{ form.entrance }}
-                  {% if form.entrance.errors %}
-                  <span class="help-inline">{% for error in form.entrance.errors %}{{ error }}<br/> {% endfor %}</span>
-                  {% endif %}
-                  {% if form.entrance.help_text%}
-                  <p class="help-block">
-                    {{ form.entrance.help_text|safe }}
-                  </p>
-                  {% endif %}
-                </div>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <div class="control-row">
                 <label class="control-label" for="input-floor">{{form.row.label}}</label>
                 <div class="controls">
                   {{ form.row }}
@@ -931,6 +927,23 @@
               </div>
 
               <div class="control-row">
+                <label class="control-label" for="elevator_direction">{{form.elevator_direction.label}}:</label>
+                <div class="controls">
+                  {{ form.elevator_direction }}
+                  {% if form.elevator_direction.errors %}
+                  <span class="help-inline">{% for error in form.elevator_direction.errors %}{{ error }}<br/> {% endfor %}</span>
+                  {% endif %}
+                  {% if form.elevator_direction.help_text%}
+                  <p class="help-block">
+                    {{ form.elevator_direction.help_text|safe }}
+                  </p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-row">
                 <label class="control-label" for="input-apartment-no">{{form.room.label}}</label>
                 <div class="controls">
                   {{ form.room }}
@@ -943,21 +956,6 @@
                   </p>
                   {% endif %}
                 </div>
-              </div>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label" for="input-floor">{{form.elevator_direction.label}}:</label>
-              <div class="controls">
-                {{ form.elevator_direction }}
-                {% if form.elevator_direction.errors %}
-                <span class="help-inline">{% for error in form.elevator_direction.errors %}{{ error }}<br/> {% endfor %}</span>
-                {% endif %}
-                {% if form.elevator_direction.help_text%}
-                <p class="help-block">
-                  {{ form.elevator_direction.help_text|safe }}
-                </p>
-                {% endif %}
               </div>
             </div>
 

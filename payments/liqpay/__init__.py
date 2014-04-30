@@ -25,8 +25,8 @@ class PaymentProcessor(PaymentProcessorBase):
     DEFAULT_CURRENCY = 'UAH'
     LANGUAGE = 'ru'
     GATEWAY_URL = 'https://www.liqpay.com/api/pay'
+    BACKEND_LOGO_URL = 'img/liqpay.png'    
     
-    _ALLOWED_IP = ('93.183.196.28', '93.183.196.26')
     EXPIRE_TIME = 240
     
     @staticmethod
@@ -69,7 +69,7 @@ class PaymentProcessor(PaymentProcessorBase):
 
         
         return self.GATEWAY_URL, "POST", res
-    
+
     @staticmethod
     def error(body, text):
         return  text
