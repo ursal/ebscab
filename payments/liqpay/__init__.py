@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import logging
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from getpaid.backends import PaymentProcessorBase
@@ -12,6 +13,8 @@ from BeautifulSoup import BeautifulSoup
 from forms import AdditionalFieldsForm
 import listeners
 import urllib
+
+logger = logging.getLogger('payments.privat24')
 
 class TransactionStatus:
     OK = 'success'
@@ -46,7 +49,7 @@ class PaymentProcessor(PaymentProcessorBase):
         res['public_key'] = PaymentProcessor.get_backend_setting('PUBLIC_KEY')
         res['amount'] = amount
         res['currency'] = PaymentProcessor.get_backend_setting('DEFAULT_CURRENCY')
-        res['description'] = u'Internet payment'
+        res['description'] = u'Пополнение счёта'
         res['order_id'] = payment.id
         res['result_url'] = "http://%s" % (site, )
         res['server_url'] = "http://%s%s" % (site, reverse('getpaid-liqpay-pay'))
@@ -61,16 +64,13 @@ class PaymentProcessor(PaymentProcessorBase):
                                            res['public_key']+
                                            str(res['order_id'])+
                                            res['type']+
-                                           res['description']+
+                                           res['description'].encode('utf-8')+
                                            res['result_url']+
                                            res['server_url']).digest())
 
         
         return self.GATEWAY_URL, "POST", res
 
-    #def get_logo_url(self):
-    #    return LOGO_URL
-    
     @staticmethod
     def error(body, text):
         return  text
@@ -78,15 +78,15 @@ class PaymentProcessor(PaymentProcessorBase):
     @staticmethod
     def compute_sig(data):
         return b64encode(hashlib.sha1(PaymentProcessor.get_backend_setting('PRIVATE_KEY')+
-                                      data.get('amount')+
-                                      data.get('currency')+
-                                      data.get('public_key')+
-                                      data.get('order_id')+
-                                      data.get('type')+
-                                      data.get('description')+
-                                      data.get('status')+
-                                      data.get('transaction_id')+
-                                      data.get('sender_phone')).digest())
+                                      data.get('amount').encode('utf-8')+
+                                      data.get('currency').encode('utf-8')+
+                                      data.get('public_key').encode('utf-8')+
+                                      data.get('order_id').encode('utf-8')+
+                                      data.get('type').encode('utf-8')+
+                                      data.get('description').encode('utf-8')+
+                                      data.get('status').encode('utf-8')+
+                                      data.get('transaction_id').encode('utf-8')+
+                                      data.get('sender_phone').encode('utf-8')).digest())
 
     @staticmethod
     def online(request):
