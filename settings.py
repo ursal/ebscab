@@ -213,14 +213,20 @@ GETPAID_BACKENDS = (#'getpaid.backends.easypay',
 PROVIDER_LOGO = 'img/ebs.jpg' # in media dir
 GETPAID_BACKENDS_SETTINGS = {
     # Please provide your settings for backends
+    'payments.privat24' : {
+        'TYPE': 'frontend',
+        'DEFAULT_CURRENCY' : 'UAH',
+        'MERCHANT_ID' : '1111111',
+        'PASSWORD' : 'nImI889Adsfsajdbfdslfjbweuibfe8',
+    },
+
     'payments.liqpay' : {
-         'TYPE': 'frontend', 
+        'TYPE': 'frontend', 
         'DEFAULT_CURRENCY' : 'UAH',
         'MERCHANT_ID': '',
         'MERCHANT_SIGNATURE': '',
         'PAY_WAY': ('card', 'liqpay', 'delayed'),
         'EXPIRE_TIME': 36,
-
     },
 
     'payments.easypay' : {
