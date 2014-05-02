@@ -50,7 +50,7 @@ class PaymentProcessor(PaymentProcessorBase):
         res['ccy'] = PaymentProcessor.get_backend_setting('DEFAULT_CURRENCY')
         res['merchant'] = PaymentProcessor.get_backend_setting('MERCHANT_ID')
         res['order'] = payment.id
-        res['details'] = u'Internet payment'
+        res['details'] = u'Пополнение счёта'
         res['ext_details'] = ''
         res['pay_way'] = 'privat24'
         res['return_url'] = "http://%s" % (site, )
