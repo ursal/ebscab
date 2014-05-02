@@ -20,14 +20,12 @@ class TransactionStatus:
 class PaymentProcessor(PaymentProcessorBase):
     BACKEND = 'payments.liqpay'
     BACKEND_NAME = _(u'Liqpay (Visa/Mastercard)')
-    PAY_WAY = ('card', 'liqpay', 'delayed')
     BACKEND_ACCEPTED_CURRENCY = ('UAH', )
     DEFAULT_CURRENCY = 'UAH'
     LANGUAGE = 'ru'
     GATEWAY_URL = 'https://www.liqpay.com/api/pay'
     BACKEND_LOGO_URL = 'img/liqpay.png'    
-    
-    EXPIRE_TIME = 240
+
     
     @staticmethod
     def form():
@@ -48,7 +46,7 @@ class PaymentProcessor(PaymentProcessorBase):
         res['public_key'] = PaymentProcessor.get_backend_setting('PUBLIC_KEY')
         res['amount'] = amount
         res['currency'] = PaymentProcessor.get_backend_setting('DEFAULT_CURRENCY')
-        res['description'] = u'Internet payment'
+        res['description'] = u'Пополнение счёта Интернет'
         res['order_id'] = payment.id
         res['result_url'] = "http://%s" % (site, )
         res['server_url'] = "http://%s%s" % (site, reverse('getpaid-liqpay-pay'))
@@ -70,6 +68,9 @@ class PaymentProcessor(PaymentProcessorBase):
         
         return self.GATEWAY_URL, "POST", res
 
+    #def get_logo_url(self):
+    #    return LOGO_URL
+    
     @staticmethod
     def error(body, text):
         return  text

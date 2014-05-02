@@ -18,6 +18,7 @@ class PayView(View):
                 
                 
         except Exception, e:
+            logging.exception('Exeption: %s' % str(e))
             logger.warning('Got malformed POST request: %s' % str(request.POST))
             return HttpResponse('MALFORMED')
 
