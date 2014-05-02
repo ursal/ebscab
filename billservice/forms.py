@@ -890,7 +890,7 @@ class SystemUserForm(ModelForm):
     created = forms.CharField(label=_(u"Создан"), widget = forms.TextInput(attrs={'readonly':'readonly'}), required=False)
     authgroup = forms.ModelMultipleChoiceField(label=_(u"Группа доступа"), queryset = AuthGroup.objects.all(), required=False)
     is_superuser = forms.BooleanField(label=_(u"Суперадминистратор"),widget=forms.CheckboxInput, required=False)
-    text_password = forms.CharField(label = _(u"Пароль") if  settings.HIDE_PASSWORDS==False else _(u"Изменить пароль"), required=False, widget = CustomPasswordWidget()  if  settings.HIDE_PASSWORDS==True else forms.widgets.TextInput())
+    text_password = forms.CharField(label = _(u"Пароль") if  settings.HIDE_SUPERUSER_PASSWORDS==False else _(u"Изменить пароль"), required=False, widget = CustomPasswordWidget()  if  settings.HIDE_SUPERUSER_PASSWORDS==True else forms.widgets.TextInput())
     class Meta:
         model = SystemUser
         exclude = ('last_ip', 'last_login', 'created', 'password')
