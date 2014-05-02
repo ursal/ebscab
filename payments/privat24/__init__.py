@@ -24,7 +24,6 @@ class TransactionStatus:
 class PaymentProcessor(PaymentProcessorBase):
     BACKEND = 'payments.privat24'
     BACKEND_NAME = _(u'Privat24')
-    PAY_WAY = 'privat24'
     BACKEND_ACCEPTED_CURRENCY = ('UAH', )
     DEFAULT_CURRENCY = 'UAH'
     LANGUAGE = 'ru'
@@ -51,9 +50,9 @@ class PaymentProcessor(PaymentProcessorBase):
         res['ccy'] = PaymentProcessor.get_backend_setting('DEFAULT_CURRENCY')
         res['merchant'] = PaymentProcessor.get_backend_setting('MERCHANT_ID')
         res['order'] = payment.id
-        res['details'] = u'Пополнение счёта Интернет'
+        res['details'] = u'Internet payment'
         res['ext_details'] = ''
-        res['pay_way'] = PaymentProcessor.get_backend_setting('PAY_WAY')
+        res['pay_way'] = 'privat24'
         res['return_url'] = "http://%s" % (site, )
         res['server_url'] = "http://%s%s" % (site, reverse('getpaid-privat24-pay'))
         
