@@ -46,7 +46,7 @@ class PaymentProcessor(PaymentProcessorBase):
         res['public_key'] = PaymentProcessor.get_backend_setting('PUBLIC_KEY')
         res['amount'] = amount
         res['currency'] = PaymentProcessor.get_backend_setting('DEFAULT_CURRENCY')
-        res['description'] = u'Пополнение счёта Интернет'
+        res['description'] = u'Internet payment'
         res['order_id'] = payment.id
         res['result_url'] = "http://%s" % (site, )
         res['server_url'] = "http://%s%s" % (site, reverse('getpaid-liqpay-pay'))
