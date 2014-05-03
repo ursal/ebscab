@@ -1,6 +1,6 @@
 import os
 from django.conf import settings
-from django.conf.urls.defaults import *
+from django.conf.urls import *
 from django.contrib import admin
 #from helpdesk import admin as helpdesk_admin
 from django.db.backends.postgresql_psycopg2.base import DatabaseFeatures
@@ -128,5 +128,9 @@ urlpatterns += patterns('paymentgateways.rapida.views',
 
 urlpatterns += patterns('paymentgateways.sberbank.views',
     (r'^pg/sberbank/payment/$', 'payment'),
+)
+
+urlpatterns += patterns('phonebook.views',
+    (r'^phonebook/$', 'num_lookup'),
 )
 
