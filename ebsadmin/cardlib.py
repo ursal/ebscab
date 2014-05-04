@@ -152,7 +152,7 @@ def add_addonservice(account_id, service_id, subaccount_id=None, ignore_locks = 
 
     # Проверка на возможность активации услуги при наличии блокировок
     if not ignore_locks:
-        if service.allow_activation==False and (account.ballance<=0 or account.balance_blocked==True or account.disabled_by_limit==True or account.status!=1):
+        if service.allow_activation==False and (account.ballance-service.cost<=0 or account.balance_blocked==True or account.disabled_by_limit==True or account.status!=1):
             return "ACCOUNT_BLOCKED"
     
     tarif_service = AddonServiceTarif.objects.filter(service=service, tarif=account.get_account_tariff())
