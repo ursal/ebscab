@@ -324,16 +324,24 @@ def get_promise(request):
     promise_min_ballance = user.promise_min_ballance if user.promise_min_ballance not in [None, 0, ''] else settings.MIN_BALLANCE_FOR_PROMISE
     allow_transfer_summ= "%.2f" % (0 if user.ballance<=0 or Transaction.objects.filter(account=user, type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT'), promise_expired=False).count() >= 1 else user.ballance)
     LEFT_PROMISE_DATE = datetime.datetime.now()+datetime.timedelta(days = user.promise_days or settings.LEFT_PROMISE_DAYS)
+    last_promise_date = Transaction.objects.filter(account=user, type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT')).order_by('-created')[0].created
+    reactivation_date = last_promise_date+datetime.timedelta(days = settings.PROMISE_REACTIVATION_DAYS)
+    last_promises = Transaction.objects.filter(account=user,  type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT')).order_by('-created')[0:10]
     if settings.ALLOW_PROMISE==True and Transaction.objects.filter(account=user, type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT'), promise_expired=False).count() >= 1:
-        last_promises = Transaction.objects.filter(account=user,  type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT')).order_by('-created')[0:10]
         error_message = _(u"У вас есть незакрытые обещанные платежи")
-        return {'error_message': error_message, 'MAX_PROMISE_SUM': promise_summ, 'LEFT_PROMISE_DATE': LEFT_PROMISE_DATE, 'disable_promise': True, 'last_promises': last_promises, 'allow_ballance_transfer':tarif.allow_ballance_transfer, 'allow_transfer_summ':allow_transfer_summ, 'active_class':'promise-img',}
+        return {'error_message': error_message, 'MAX_PROMISE_SUM': promise_summ, 'LEFT_PROMISE_DATE': LEFT_PROMISE_DATE, 'disable_promise': True, 'last_promises': last_promises, 'allow_ballance_transfer':tarif.allow_ballance_transfer, 'allow_transfer_summ':allow_transfer_summ, 'show_last_promises': True, 'active_class':'promise-img',}
     if settings.ALLOW_PROMISE==True and user.ballance<promise_min_ballance:
-        last_promises = Transaction.objects.filter(account=user, type=TransactionType.objects.get(internal_name='PROMISE_PAYMENT')).order_by('-created')[0:10]
         error_message = _(u"Ваш баланс меньше разрешённого для взятия обещанного платежа. Минимальный баланс: %(MIN_BALLANCE)s %(CURRENCY)s") % {'MIN_BALLANCE': promise_min_ballance, 'CURRENCY': settings.CURRENCY}
         return {'error_message': error_message, 'MAX_PROMISE_SUM': promise_summ, 'LEFT_PROMISE_DATE': LEFT_PROMISE_DATE, 'disable_promise': True, 'last_promises': last_promises, 'allow_ballance_transfer':tarif.allow_ballance_transfer, 'allow_transfer_summ':allow_transfer_summ, 'active_class':'promise-img',}
-    
-    
+
+    if settings.ALLOW_PROMISE==True and settings.PROMISE_ONCE_PER_MONTH==True and last_promise_date.month==datetime.date.today().month:
+        error_message = _(u"Услуга обещанного платежа доступна раз в месяц. Вы уже воспользовались услугой обещанного платежа %(LAST_PROMISE_DATE)s.") % {'LAST_PROMISE_DATE': last_promise_date}
+        return {'error_message': error_message, 'MAX_PROMISE_SUM': promise_summ, 'LEFT_PROMISE_DATE': LEFT_PROMISE_DATE, 'disable_promise': True, 'last_promises': last_promises, 'allow_ballance_transfer':tarif.allow_ballance_transfer, 'allow_transfer_summ':allow_transfer_summ, 'active_class':'promise-img',}
+
+    if  settings.ALLOW_PROMISE==True and reactivation_date > datetime.datetime.now():
+        error_message = _(u"Вы уже воспользовались услугой обещанного платежа %(LAST_PROMISE_DATE)s. Услуга обещанного платежа станет доступна %(REACTIVATION_DATE)s ") % {'LAST_PROMISE_DATE': last_promise_date, 'REACTIVATION_DATE': reactivation_date}
+        return {'error_message': error_message, 'MAX_PROMISE_SUM': promise_summ, 'LEFT_PROMISE_DATE': LEFT_PROMISE_DATE, 'disable_promise': True, 'last_promises': last_promises, 'allow_ballance_transfer':tarif.allow_ballance_transfer, 'allow_transfer_summ':allow_transfer_summ, 'active_class':'promise-img',}
+
     if request.method == 'POST':
         operation= request.POST.get("operation")
         if operation=='promise':
@@ -416,6 +424,9 @@ def make_payment(request):
              qiwi_form = QiwiPaymentRequestForm(initial={'phone':request.user.account.phone_m})
     from getpaid.forms import SelectPaymentMethodForm
     form = SelectPaymentMethodForm()
+    if request.user.account.ballance_isnt_good():
+        error_message = "Недостаточно средств на балансе - online платежные системы недоступны. Вы можете воспользоваться обещанным платежом и повторить попытку, либо пополнить счёт с помощью карт экспресс-оплаты."
+        return {'allow_qiwi':settings.ALLOW_QIWI, 'allow_webmoney':settings.ALLOW_WEBMONEY, 'qiwi_form':qiwi_form, 'payment_form': form, 'error_message':error_message}
     return {'allow_qiwi':settings.ALLOW_QIWI, 'allow_webmoney':settings.ALLOW_WEBMONEY, 'qiwi_form':qiwi_form, 'payment_form': form}
 
 

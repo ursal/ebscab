@@ -191,6 +191,8 @@ ALLOW_PROMISE = True
 MAX_PROMISE_SUM = 10000
 MIN_BALLANCE_FOR_PROMISE=-1000
 LEFT_PROMISE_DAYS = 7
+PROMISE_REACTIVATION_DAYS = 0
+PROMISE_ONCE_PER_MONTH = True
 
 ALLOW_WEBMONEY = False
 ALLOW_QIWI = False
@@ -203,8 +205,6 @@ EMAIL_HOST_USER = 'user@gmail.com'
 EMAIL_HOST_PASSWORD = 'userpassword'
 
 HIDE_PASSWORDS = False
-HIDE_SUPERUSER_PASSWORDS = True
-
 ENABLE_SELECT2_MULTI_PROCESS_SUPPORT = False
 CURRENCY = u' руб'
 
@@ -215,20 +215,14 @@ GETPAID_BACKENDS = (#'getpaid.backends.easypay',
 PROVIDER_LOGO = 'img/ebs.jpg' # in media dir
 GETPAID_BACKENDS_SETTINGS = {
     # Please provide your settings for backends
-    'payments.privat24' : {
-        'TYPE': 'frontend',
-        'DEFAULT_CURRENCY' : 'UAH',
-        'MERCHANT_ID' : '1111111',
-        'PASSWORD' : 'nImI889Adsfsajdbfdslfjbweuibfe8',
-    },
-
     'payments.liqpay' : {
-        'TYPE': 'frontend', 
+         'TYPE': 'frontend', 
         'DEFAULT_CURRENCY' : 'UAH',
         'MERCHANT_ID': '',
         'MERCHANT_SIGNATURE': '',
         'PAY_WAY': ('card', 'liqpay', 'delayed'),
         'EXPIRE_TIME': 36,
+
     },
 
     'payments.easypay' : {
