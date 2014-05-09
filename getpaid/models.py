@@ -104,7 +104,7 @@ class PaymentFactory(models.Model, AbstractMixin):
 
         Returns boolean value if payment was fully paid
         """
-        self.paid_on = datetime.utcnow().replace(tzinfo=utc)
+        self.paid_on = datetime.now()
         if amount:
             self.amount_paid = amount
         else:
